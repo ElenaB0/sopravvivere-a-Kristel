@@ -1,33 +1,80 @@
 :root{
-  --bg1:#0f172a;
-  --bg2:#0b3b6f;
-  --accent:#4fb0ff;
-  --card:#0c2546;
+  --bg-deep:#051025; /* deepest navy */
+  --bg-mid:#062a56;  /* deep blue */
+  --bg-sky:#1b6fb8;  /* sky blue accent */
+  --bg-glow:#58c2ff; /* glowing cyan */
+  --card-glass:rgba(255,255,255,0.04);
+  --accent:linear-gradient(90deg,#6fd3ff,#2b7fff);
 }
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Arial}
 body{
-  background:linear-gradient(120deg,var(--bg1),var(--bg2));
-  color:#e6f0ff;
+  color:#eaf6ff;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
   display:flex;align-items:center;justify-content:center;padding:2rem;
+  background:radial-gradient(1200px 600px at 10% 20%, rgba(41,128,255,0.14), transparent 10%),
+             radial-gradient(1000px 500px at 90% 80%, rgba(58,160,255,0.10), transparent 12%),
+             linear-gradient(160deg,var(--bg-deep),var(--bg-mid) 45%, var(--bg-sky) 100%);
+  background-attachment:fixed;
+  position:relative;
+  overflow-x:hidden;
 }
-.container{width:100%;max-width:900px}
+.container{width:100%;max-width:980px}
 header{text-align:center;margin-bottom:1rem}
-h1{margin:.2rem 0;font-size:2rem}
-.subtitle{opacity:.9;margin:0}
+h1{margin:.2rem 0;font-size:2rem;letter-spacing:0.4px}
+.subtitle{opacity:.92;margin:0;color:rgba(230,245,255,0.9)}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1rem 0}
-article{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.05));padding:1rem;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.35)}
+article{background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));padding:1.1rem;border-radius:14px;box-shadow:0 8px 30px rgba(3,12,30,0.6);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.04)}
 .comment{margin-top:1.2rem}
-textarea{width:100%;padding:.8rem;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
+textarea{width:100%;padding:.8rem;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);color:inherit}
 .controls{display:flex;gap:.5rem;align-items:center;margin-top:.5rem}
-button{background:var(--accent);color:#04202b;border:none;padding:.5rem .8rem;border-radius:8px;cursor:pointer}
-button#clear{background:transparent;border:1px solid rgba(255,255,255,0.08);color:inherit}
-footer{text-align:center;margin-top:1.2rem;opacity:.9}
+button{background:var(--bg-glow);background-image:var(--accent);color:#04202b;border:none;padding:.55rem .9rem;border-radius:12px;cursor:pointer;box-shadow:0 6px 18px rgba(43,127,255,0.18)}
+button#clear{background:transparent;border:1px solid rgba(255,255,255,0.06);color:inherit;box-shadow:none}
+footer{text-align:center;margin-top:1.2rem;opacity:.95}
 
 /* subtle animated sheen */
-body:before{content:"";position:fixed;inset:0;pointer-events:none;background:linear-gradient(60deg,rgba(255,255,255,0.02),transparent 30%,rgba(255,255,255,0.01));mix-blend-mode:overlay;animation:move 10s linear infinite}
-@keyframes move{0%{transform:translateX(-30%)}50%{transform:translateX(30%)}100%{transform:translateX(-30%)}}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent 30%);mix-blend-mode:overlay;animation:bgDrift 18s linear infinite}
+@keyframes bgDrift{0%{transform:translateX(-8%)}50%{transform:translateX(8%)}100%{transform:translateX(-8%)}}
 
 @media (max-width:480px){h1{font-size:1.4rem}}
+
+/* Hearts animation (now blue-themed) */
+.hearts{display:flex;justify-content:space-around;align-items:flex-end;height:80px;margin:1rem 0;pointer-events:none}
+.heart{font-size:22px;color:transparent;background:linear-gradient(180deg,#6fe0ff,#2b7fff);-webkit-background-clip:text;opacity:.95;transform-origin:center;animation:floatUp 4.6s linear infinite}
+.heart:nth-child(1){font-size:20px;animation-duration:4.6s;animation-delay:0s}
+.heart:nth-child(2){font-size:24px;animation-duration:5s;animation-delay:.6s}
+.heart:nth-child(3){font-size:20px;animation-duration:4.8s;animation-delay:.3s}
+.heart:nth-child(4){font-size:24px;animation-duration:5.2s;animation-delay:.8s}
+.heart:nth-child(5){font-size:22px;animation-duration:4.4s;animation-delay:.2s}
+
+.footer-heart{display:inline-block;transform:translateY(0);animation:pulse 2s infinite ease-in-out;color:#7fd7ff}
+
+@keyframes floatUp{
+  0%{transform:translateY(0) scale(1);opacity:0}
+  12%{opacity:1}
+  50%{transform:translateY(-70px) scale(1.08)}
+  85%{opacity:.6}
+  100%{transform:translateY(-140px) scale(.95);opacity:0}
+}
+
+@keyframes pulse{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.12)}
+  100%{transform:scale(1)}
+}
+
+/* clickable content blocks */
+.content-block{cursor:pointer;user-select:none;transition:transform .18s ease,box-shadow .18s ease}
+.content-block:focus{outline:2px solid rgba(79,176,255,0.25);outline-offset:4px}
+.content-block:hover{transform:translateY(-6px);box-shadow:0 12px 34px rgba(10,30,60,0.6)}
+
+/* big blue heart that appears on click (gradient text) */
+.big-heart{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(0);font-size:140px;background:linear-gradient(45deg,#9fe9ff,#2b7fff);-webkit-background-clip:text;color:transparent;pointer-events:none;z-index:9999;opacity:0;animation:heartPop .85s cubic-bezier(.2,.9,.3,1) forwards}
+@keyframes heartPop{
+  0%{transform:translate(-50%,-50%) scale(.2);opacity:0}
+  40%{transform:translate(-50%,-50%) scale(1.18);opacity:1}
+  70%{transform:translate(-50%,-50%) scale(.96);opacity:.9}
+  100%{transform:translate(-50%,-50%) scale(1);opacity:0}
+}
+

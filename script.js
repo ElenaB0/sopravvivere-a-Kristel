@@ -25,3 +25,32 @@ function clearComment(){
 saveBtn.addEventListener('click', save)
 clearBtn.addEventListener('click', clearComment)
 window.addEventListener('load', load)
+
+// show a big blue heart centered over the clicked block
+function spawnHeartAt(x, y){
+  const el = document.createElement('div')
+  el.className = 'big-heart'
+  el.textContent = '💙'
+  // position the heart exactly at the click coordinates (viewport coordinates)
+  el.style.left = (x || window.innerWidth/2) + 'px'
+  el.style.top = (y || window.innerHeight/2) + 'px'
+  document.body.appendChild(el)
+  // remove after animation finishes
+  setTimeout(()=>{ if(el && el.parentNode) el.parentNode.removeChild(el) }, 900)
+}
+
+function attachHeartHandlers(){
+  const blocks = document.querySelectorAll('.content-block')
+  blocks.forEach(b => {
+    b.addEventListener('click', () => {
+      const r = b.getBoundingClientRect()
+      // optionally position relative to element center; we currently use centered fixed heart
+      spawnHeartAt(r.left + r.width/2, r.top + r.height/2)
+    })
+    b.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); b.click() }
+    })
+  })
+}
+
+window.addEventListener('load', attachHeartHandlers)
