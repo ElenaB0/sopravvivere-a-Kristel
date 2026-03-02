@@ -4,6 +4,16 @@ const saveBtn = document.getElementById('save')
 const clearBtn = document.getElementById('clear')
 const status = document.getElementById('status')
 
+// sound that plays when a block is clicked
+const clickSound = new Audio('https://actions.google.com/sounds/v1/cartoon/pop.ogg');
+clickSound.volume = 0.5; // not too loud
+
+function playClickSound(){
+  // restart if already playing
+  clickSound.currentTime = 0;
+  clickSound.play().catch(_=>{}); // ignore play promise rejections
+}
+
 function load(){
   const v = localStorage.getItem(KEY)
   if(v) ta.value = v
@@ -46,6 +56,7 @@ function attachHeartHandlers(){
       const r = b.getBoundingClientRect()
       // optionally position relative to element center; we currently use centered fixed heart
       spawnHeartAt(r.left + r.width/2, r.top + r.height/2)
+      playClickSound()
     })
     b.addEventListener('keydown', (e) => {
       if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); b.click() }
